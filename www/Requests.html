@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Donate</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+			<script type="text/javascript" src="js/jquery.js"></script>
+	  		<script type="text/javascript" src="js/popper.min.js"></script>
+	  	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	  	<!-- <script type="text/javascript" src="cordova.js"></script> -->
+	<style type="text/css" media="screen">
+	table{
+		text-align: center;	
+	}	
+
+	</style>
+		  <script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-app.js"></script>
+	  <!-- Add Firebase products that you want to use -->
+	  <script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-firestore.js"></script>
+	    <script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-auth.js"></script>
+	  <script type="text/javascript" src="js/initFire.js"></script>
+			
+	<script type="text/javascript">
+	let fetchedRecords = false;
+	let requests = [];
+	function cleanUp(){
+		$(".requestBtn").click(function(){
+			let obj = requests[parseInt(this.id[1])];
+			const toID = obj.id;
+			const phone = obj.contact;
+			console.log(obj);
+			reqs.doc(toID + CURRENT_UID).set({
+				From : CURRENT_UID,
+				To : toID,
+				Name : currentUserName,
+				Contact : currentUser.Contact,
+				Age : currentUser.Age,
+				City : currentUser.City
+			});
+			if(phone == ""){
+					$("#SorryModal").modal('show');
+				return;
+			}
+			console.log("Made Request");
+				cordova.plugins.phonedialer.call(
+				phone,
+				function(err){
+				if(err == "empty") $("#SorryModal").modal('show');
+				else alert("Dialer Error" + err);
+				},
+				function(success) {
+					}
+				);
+				});
+			this.disabled=true;
+			// 
+			$(".requestBtn").attr("ontouchend","window.plugins.deviceFeedback.haptic(window.plugins.deviceFeedback.KEYBOARD_TAP)")
+		
+		}
+
+
+	$(document).ready(function(){
+	$("#getDataBtn").click(function(){
+		getBloodRecords();
+	
+	});
+
+	
+
+	});
+
+
+
+function getBloodRecords(){
+	
+	const tb = $("#tableBody");
+	function addRow(data,c){
+	const existingData = tb.html();
+	console.log(existingData)
+	let newData = "<tr> <td> " + data.First + " "+ data.Last + "</td> <td>" + data.Age + "</td>";
+	newData += "<td>" + data.BloodType + "</td>"
+	newData+= "<td> <button id='b" + c + "' type=button class=\"requestBtn btn-danger btn\" >Request Help</button> </td> </tr>"; 
+	// console.log(newData)
+	tb.html(existingData+newData);
+}
+	if(fetchedRecords === true){
+		tb.html("");
+		requests = [];
+	}
+	const bloodType= $("#bloodType").val();
+	db.collection("Users")
+		.where("BloodType","==", bloodType)
+		.get()
+		.then(function(qs){
+			if(qs == null){
+				alert("No records available");
+				return;
+			}else{
+			fetchedRecords = true;
+			let count=0;
+			qs.forEach(function(doc){
+				console.log(doc.id, CURRENT_UID);
+				if(doc.id == CURRENT_UID) return;
+				let data = doc.data();
+				let contact = "";
+				if(data.Permit){
+					contact = data.Contact;
+				}
+				requests.push({
+					id : doc.id, 
+					contact: contact
+				});
+				addRow(data, count);
+				count+=1;
+			});
+			cleanUp();
+		}
+		})
+		.catch(function(err){
+			alert("Some Error Occured");
+			console.log(err);
+		})
+
+
+}
+
+
+
+</script>
+<style type="text/css" media="screen">
+.selectBlood{
+	width: 20%;
+}	
+</style>
+</head>
+<body>
+	      <div id="SorryModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Sorry but..</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+                  <div class="modal-body">
+                    <p class="text-primary">The person you're trying to call has refused to share his contact info with others.
+                    We have sent them your request. They will get back to you as soon as possible. <br>
+                    <p class="text-muted">
+                	We hope you find a donor soon. </p>
+                    </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+				</div>
+			</div>
+		</div>
+	
+<!-- 
+	For me to get blood from others, what do I need?
+	I just need the person's UID number,
+	using which I can add to a common data pool.
+	Frm which the user will query and see how many requests he has.
+	Which will then be displayed on the donate page. -->
+	<div>
+	    <select id="bloodType" class="custom-select selectBlood" width="50px">
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+                </td>
+	<span><button id="getDataBtn" class="ml-4 btn btn-dark">Search</button> </span>
+	</div>
+<br>
+	<table class="table-responsive table table-light text-primary">
+		<caption>Donate Blood</caption>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Age</th>
+				<th>Blood Type</th>
+				<th>Request</th>
+			</tr>
+		</thead>
+		<tbody id="tableBody">
+<!-- 			<tr>
+				<td>Rahul</td>
+				<td> 19</td>
+				<td> AB+</td>
+				<td><button class="btn btn-danger">Request Help</button>
+			</tr>
+			 -->
+		</tbody>
+	</table>
+</body>
+</html>

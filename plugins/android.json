@@ -1,0 +1,24 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-plugin-phone-call": {
+      "PACKAGE_NAME": "io.cordova.bloodbank"
+    },
+    "cordova-plugin-badge": {
+      "PACKAGE_NAME": "io.cordova.bloodbank"
+    },
+    "cordova-plugin-velda-devicefeedback": {
+      "PACKAGE_NAME": "io.cordova.bloodbank"
+    }
+  },
+  "dependent_plugins": {}
+}

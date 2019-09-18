@@ -1,0 +1,62 @@
+{
+  "_from": "git+https://github.com/lakshmansha/cordova-plugin-phone-call.git",
+  "_id": "cordova-plugin-phone-call@1.0.7",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/cordova-plugin-phone-call",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "https://github.com/lakshmansha/cordova-plugin-phone-call.git",
+    "rawSpec": "https://github.com/lakshmansha/cordova-plugin-phone-call.git",
+    "saveSpec": "git+https://github.com/lakshmansha/cordova-plugin-phone-call.git",
+    "fetchSpec": "https://github.com/lakshmansha/cordova-plugin-phone-call.git",
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+https://github.com/lakshmansha/cordova-plugin-phone-call.git#2222697c23fc116858ee0b4522f47c5b4c638fbb",
+  "_spec": "https://github.com/lakshmansha/cordova-plugin-phone-call.git",
+  "_where": "/home/riki/Desktop/Study Material/Self-Study/LordsProject/APP/BloodBank",
+  "author": {
+    "name": "Lakshman.S"
+  },
+  "bugs": {
+    "url": "https://github.com/lakshmansha/cordova-plugin-phone-call/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-phone-call",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "cordovaDependencies": {
+    "3.0.0": {
+      "cordova": ">100"
+    }
+  },
+  "deprecated": false,
+  "description": "Cordova Phone Call Plugin",
+  "homepage": "https://github.com/lakshmansha/cordova-plugin-phone-call#readme",
+  "keywords": [
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios",
+    "phonecall"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-phone-call",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lakshmansha/cordova-plugin-phone-call.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.7"
+}

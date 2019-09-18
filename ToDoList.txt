@@ -1,0 +1,3 @@
+cordova calling plugin.
+Fix starting image. 
+Add Animation.

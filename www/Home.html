@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home</title>
+		<!-- All required documents -->
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<script type="text/javascript" src="js/jquery.js"></script>
+  		<script type="text/javascript" src="js/popper.min.js"></script>
+	  	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	  	<script type="text/javascript" src="cordova.js"></script>
+		<style>
+			.buttonPadding{
+				padding-left: 30px;
+				padding-right: 30px;
+			}
+		    .redBG{
+		    background-color: #bf033b;
+		    background-image: -webkit-linear-gradient(bottom right, #bf033b 40%, #ffc719 90%);
+		    background-image: -o-linear-gradient(bottom right, #bf033b 50%, #ffc719 90%);
+		    background-image: linear-gradient(to top left, #bf033b 10%, #ffc719 74%);
+		      }
+		</style>
+		<script>
+			$(document).ready(function(){
+				$("#greet").append();
+				const frame = $("#frame");
+				$("#donate").click(function(){
+					frame.attr("src", "./Donate.html");
+				});
+				$("#request").click(function(){
+					frame.attr("src", "./Requests.html");
+				});
+				$("#signOut").click(function(){
+					console.log("Calling logging out");
+					logOutBloodBank();
+				});
+			});
+		</script>
+			<!-- Firebase Links -->
+<script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-firestore.js"></script>
+<script type="text/javascript" src="js/initFire.js"></script>
+  	<script type="text/javascript">
+	function logOutBloodBank(){
+	console.log("Loggin out!");
+	firebase.auth().signOut();
+	setTimeout(function(){},2000);
+	window.location.href = "Login.html";
+}
+  		
+  	</script>
+
+</head>
+<body>
+	<div height="10%" width="100%" class="d-block redBG">
+	<div class="d-flex flex-row-reverse ">
+		<span class="bg-dark text-light px-2" id="greet">Welcome </span>
+	</div>
+	<div>
+	<span>
+		<img src="assets/logoOG.jpeg" class="img-thumbnail ml-3 mb-2" height="60px" width="60px" alt="">
+	</span>
+		<span class="text-danger ml-4 text align-text-bottom" style="font-size: 30px; font-family: Bodoni"> Life Savers</span>
+	</div>
+		<div class="d-flex justify-content-center rep">
+			<big>
+				<button id="donate" ontouchend="window.plugins.deviceFeedback.haptic(window.plugins.deviceFeedback.KEYBOARD_TAP)"  class="btn btn-secondary buttonPadding" > Donate </button>	
+				<button id="request" ontouchend="window.plugins.deviceFeedback.haptic(window.plugins.deviceFeedback.KEYBOARD_TAP)" class="btn btn-secondary buttonPadding"> Request </button>
+				<button ontouchend="window.plugins.deviceFeedback.haptic(window.plugins.deviceFeedback.KEYBOARD_TAP)" class="img-thumbnail ml-4" id="signOut">
+					<img src="assets/logout.jpg" height=30px width=30px>
+				</button>
+				
+			</big>
+		</div>
+
+		<!-- <div class="container-fluid" style="background-color: black; "> -->
+				<iframe id="frame" height=800px width="100%" src="./Donate.html" >
+					
+				</iframe>
+		<!-- </div> -->
+	<!-- </div> -->
+</body>
+</html>

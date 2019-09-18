@@ -1,0 +1,290 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>HTML Table</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+   <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+   <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/Cities.js"></script>
+     <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript">
+           let fn_check = false;
+           let ln_check = false;
+           let ps_check = false;
+           let rps_check = false;
+           let em_check = false;
+           let ph_check = false;
+           let ad_check = false;
+           let age_check = false;
+
+
+
+        $(document).ready(function(){
+         
+            const citySelector = $("#userCity");
+            CITY_LIST.forEach(function(city){
+                let dom = "<option value= \"" + city + "\" >"
+                dom+=city + "</option>";
+                citySelector.append(dom);
+            });
+            //First name
+            $("#userFirstName").focusout(function(){
+                if(this.value.length === 0){
+                    $("#userFirstNameLabel").css("color", "red");
+                    fn_check=false;
+                }else{
+                    $("#userFirstNameLabel").css("color", "green");
+                    fn_check=true;
+                }
+                if(fn_check) $(this).css("background-color","white");
+            });
+            //Last Name
+            $("#userLastName").focusout(function(){
+                if(this.value.length === 0){
+                    $("#userLastNameLabel").css("color", "red");
+                    ln_check=false;
+                }else{
+                    $("#userLastNameLabel").css("color", "green");
+                    ln_check=true;
+                }
+                if(ln_check) $(this).css("background-color","white"); 
+            });
+            //Password
+            $("#userPass").change(function(){
+                if(this.value.length < 8 ){
+                    $("#userPassLabel").css("color", "red");
+                    ps_check=false;
+                }else{
+                    $("#userPassLabel").css("color", "green");
+                    ps_check=true;
+                }
+                if(ps_check)  $(this).css("background-color","white"); 
+            });
+
+            //Re Enter Password
+            $("#userRePass").change(function(){
+                if(this.value != document.getElementById("userPass").value){
+                    $("#userRePassLabel").css("color", "red");
+                    rps_check=false;
+                }else{
+                    $("#userRePassLabel").css("color", "green");
+                    rps_check=true;
+                }
+                if(rps_check) $(this).css("background-color","white"); 
+            });
+            //Email
+
+            $("#userEmail").change(function(){
+                var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                if(re.test(this.value)){
+                $("#userEmailLabel").css("color", "green");
+                    em_check=true;
+                }else{
+                    $("#userEmailLabel").css("color", "red");
+                    em_check=false;
+                }
+                if(em_check)  $(this).css("background-color","white"); 
+            });
+
+
+            // Contact
+            $("#userContact").change(function(){
+                if(this.value.length != 10){
+                    $("#userContactLabel").css("color", "red");
+                    ph_check=false;
+                }else{
+                    $("#userContactLabel").css("color", "green");
+                    ph_check=true;
+                }
+                if(ph_check)  $(this).css("background-color","white"); 
+            });
+
+            // Address
+
+            $("#userAddress").change(function(){
+                if(this.value.length <= 10){
+                    $("#userAddressLabel").css("color", "red");
+                    ad_check=false;
+                }else{
+                    $("#userAddressLabel").css("color", "green");
+                    ad_check=true;
+                }
+                if(ad_check)  $(this).css("background-color","white"); 
+            });
+
+
+            // Age
+            $("#userAge").change(function(){
+                if(this.value < 18){
+                    $("#userAgeLabel").css("color","red");
+                    age_check=false;
+                    
+                }else{
+                    $("#userAgeLabel").css("color","green");
+                    age_check=true;
+                }
+                if(age_check)  $(this).css("background-color","white"); 
+            });
+            $("#signUpBtn").click(function(){
+                let all_ok = fn_check && ln_check && ps_check && rps_check && em_check && ph_check && ad_check && age_check;
+                if(all_ok){
+                addUser();
+            }else{
+                if(!fn_check) $("#userFirstName").css("background-color","red");
+                if(!ln_check) $("#userLastName").css("background-color","red");
+                if(!ps_check) $("#userPass").css("background-color","red");
+                if(!rps_check) $("#userRePass").css("background-color","red");
+                if(!em_check) $("#userEmail").css("background-color","red");
+                if(!ph_check) $("#userContact").css("background-color","red");
+                if(!ad_check) $("#userAddress").css("background-color","red");
+                if(!age_check) $("#userAge").css("background-color","red");
+            }
+            });
+        });
+    </script>
+            <style type="text/css" media="screen">
+                .redBG{
+                background-color: #bf033b;
+                background-image: -webkit-linear-gradient(bottom right, #bf033b 50%, #ffc719 74%);
+                background-image: -o-linear-gradient(bottom right, #bf033b 40%, #ffc719 74%);
+                background-image: linear-gradient(to top left, #bf033b 10%, #ffc719 74%);
+                  };
+                  
+            </style>
+            <script type="text/javascript"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-app.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+   <script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-auth.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-firestore.js"></script>
+  <script type="text/javascript" src="js/initFire.js"></script>
+</head>
+
+<body>
+    <div class="redBG">
+  <br>
+  <span>
+    <img src="assets/logoOG.jpeg" class="img-thumbnail ml-3" height="50px" width="50px" alt="">
+  </span>
+  <span class="text-light ml-4" style="font-size: 30px; font-family: Bodoni"> Life Savers</span>
+  <br><br>
+</div>
+	<center>
+    <form method="" action="">
+        <table class="table table-bordered table-striped table-responsive text-center mx-auto" width="100%">
+            <caption>Registration form</caption>
+            <tr>
+                <th width="50%" id="userFirstNameLabel">First name</th>
+                <td width="50%"><input type="text" id="userFirstName" maxlength="20" placeholder="Enter your first name" required /></td>
+            </tr>
+            <tr>
+                <th id="userLastNameLabel">Last name</th>
+                <td><input id="userLastName" placeholder="Enter your last name" type="text" /></td>
+            </tr>
+            <tr>
+                <th id="userPassLabel">Password</th>
+                <td><input id="userPass" placeholder="Enter your password" type="password" /></td>
+            </tr>
+            <tr>
+                <th id="userRePassLabel">ReEnter password</th>
+                <td><input id="userRePass" placeholder="Enter your password again" type="password" /></td>
+            </tr>
+            <tr>
+                <th id="userEmailLabel">Email</th>
+                <td><input id="userEmail" type="email" placeholder="Enter your email"/></td>
+            </tr>
+            <tr>
+                <th id="userContactLabel">Phone No. </th>
+                <td><input id="userContact" maxlength="10" type="text" placeholder="Enter your mobile number"/></td>
+            </tr>
+            <tr>
+                <th colspan="2"> Permission to share your contact number. 
+                        <span><input type="checkbox" id="permitToShare" value="true" checked> </span>
+                         <a role="button" class="" data-toggle="modal" data-target="#myModal">
+                            <p class="text-muted">Read more</p>
+                        </a> 
+<!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button> -->
+                <div id="myModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Here's why we want to share your contact info</h4>
+                  </div>
+                  <div class="modal-body">
+                    <p class="text-primary">In cases of emergencies simply sending a request and waiting for response from the donor may not suffice. In context of saving lives, time is invaluable. Sharing your contact allows the person requesting your help to cut down the time it takes for you to notice you have a request. <br>
+                    <b> But  <br> </b>
+                    <p class="text-info">
+                    At the same time, sharing your contact makes it publically available which means it may be misused.
+                    So be sure to accept this, knowing full weight of your choice. </p><br>
+                    <p class="text-muted">
+                If any mishaps occur due to sharing your contact info, it will be solely your responsibility. </p>
+                    </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+
+                            </th>
+            </tr>
+            <tr>
+                <th id="userAddressLabel">Enter your address</th>
+                <td><textarea id="userAddress" placeholder="Enter your address" rows="8" cols="20"></textarea></td>
+            </tr>
+            <tr>
+                <th id="userGenderLabel">Select your gender</th>
+                <td>
+                    Male<input type="radio" name="userGender" value="Male" id="m" checked="checked" />
+                    Female<input type="radio" name="userGender" id="f" value="Female" />
+                    Others<input id="o" type="radio" name="userGender" value="Others" />
+                </td>
+            </tr>
+            <tr>
+                <th id="userBloodTypeLabel">Blood type</th>
+                <td>
+					<select id="userBloodType" name="bloodType">
+						<option value="A+">A+</option>
+						<option value="A-">A-</option>
+						<option value="B+">B+</option>
+						<option value="B-">B-</option>
+						<option value="AB+">AB+</option>
+						<option value="AB-">AB-</option>
+						<option value="O+">O+</option>
+						<option value="O-">O-</option>
+					</select>
+                </td>
+            </tr>
+            <tr>
+                <th id="userAgeLabel">Age</th>
+                <td><input id="userAge" type="number" /></td>
+            </tr>
+            <tr>
+                <th id="userCityLabel">City</th>
+                <td>
+                    <select id="userCity">
+                    
+                    </select>
+                </td>
+            </tr>
+<!--             <tr>
+                <th>Upload your pic</th>
+                <td><input type="file" /></td>
+            </tr> -->
+            <tr>
+                <td align="center">
+                    <input class="btn btn-primary" ontouchend="window.plugins.deviceFeedback.haptic(window.plugins.deviceFeedback.KEYBOARD_TAP)" type="button" value="Sign Up" id="signUpBtn" />                    
+                </td>
+                <td>
+                    <input class="btn btn-primary" ontouchend="window.plugins.deviceFeedback.haptic(window.plugins.deviceFeedback.KEYBOARD_TAP)" type="reset" value="Reset Data" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</center>
+</body>
+
+</html>

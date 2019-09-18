@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Requests</title>
+			<link rel="stylesheet" href="css/bootstrap.min.css">
+	  		<script type="text/javascript" src="js/jquery.js"></script>
+	  		<script type="text/javascript" src="js/popper.min.js"></script>
+	  		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	  		<script type="text/javascript" src="cordova.js"></script>
+  <!-- Add Firebase products that you want to use -->
+	<script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-app.js"></script>
+  	<script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-auth.js"></script>
+	<script type="text/javascript" src="js/initFire.js"></script>
+	<style type="text/css" media="screen">
+		td, th{
+			width: 20%;
+		}	
+		div{
+			word-wrap: break-word;
+		}
+		table{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			table-layout: auto;
+			/*text-align: center;*/
+		}
+		tr, tbody, thead{
+ 	   display: block;
+    	width: 100%;
+		}
+	</style>
+	<script type="text/javascript">
+		let contacts = [];
+	function addRequestRow(data,c){
+			let string = "<tr> <td> " + data.Name + "</td>";
+			string+="<td>" + data.City + "</td>";
+			string+="<td> <button id=h" + c + " class=\"helpBtn btn  btn-danger\">Help Them</button></td> </tr>";
+			const tbody = $("#RequestTableBody");
+			tbody.append(string);
+		}
+	function fillRequest(){
+			console.log("Filling Requests");
+				reqs.where("To", "==", CURRENT_UID)
+				.get()
+				.then(function(docs){
+					if(docs == null){
+						console.log("No Requests");
+						return;
+					}else{
+						let count = 0;
+						docs.forEach(function(doc){
+							let data = doc.data();
+							// console.log(data.Contact);
+							contacts.push(data.Contact);
+							addRequestRow(data, count);
+							count++;
+						});
+					}
+					bindFunctions();
+				})
+
+				console.log(contacts)
+}
+
+	function bindFunctions(){
+	console.log("Binding Functions");
+	// console.log($(".helpBtn"));
+	const hb = $(".helpBtn"); 
+	hb.click(function(){
+	// console.log(this);
+	const ph = contacts[parseInt(this.id[1])];
+	// alert(ph);
+
+	cordova.plugins.phonedialer.call(
+		ph,
+		function(err){
+			if(err == "empty") alert("InValid Phone Number");
+			else alert("Dialer Error" + err);
+		},
+		function(success) {
+			// alert("Dialing Successful!");
+		}
+		);
+	});
+	//ontouchend="window.plugins.deviceFeedback.haptic(window.plugins.deviceFeedback.KEYBOARD_TAP)"
+	hb.attr("ontouchend","window.plugins.deviceFeedback.haptic(window.plugins.deviceFeedback.KEYBOARD_TAP)");
+	}
+
+		$(document).ready(async function(){
+			if(CURRENT_UID==undefined || CURRENT_UID == null){
+			setTimeout(fillRequest, 1000);
+			}else{
+				fillRequest();
+			}
+		});
+	</script>
+</head>
+<body>
+	<table class="table table-responsive">
+		<!-- <caption>Requests</caption> -->
+		<thead>
+			<tr>
+				<th> Name </th>
+				<th>Locality</th>
+				<th> Request </th>
+			</tr>
+		</thead>
+		<tbody id="RequestTableBody">
+		<!-- 	<tr data-toggle="collapse" data-target="#Rahul_Data">
+				<td>Rahul</td>
+				<td> Andheri </td>
+				<td><button class="btn btn-danger">Help Them</button></td>
+			</tr> -->
+			<!-- <tr>
+				<td colspan="3"> 
+					 <div id="Rahul_Data" class="collapse" >
+					 	<p>
+						Name: Rahul Bansode <br>
+						Age: 19<br>
+						City : Andheri<br>
+						Contact: 8693865988<br>
+						Message: HELP MOI PLS <br>
+						</p>
+					</div>
+				</td>
+			</tr> -->
+		</tbody>
+	</table>
+</body>
+</html>
