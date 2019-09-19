@@ -6,7 +6,7 @@
 			<script type="text/javascript" src="js/jquery.js"></script>
 	  		<script type="text/javascript" src="js/popper.min.js"></script>
 	  	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	  	<!-- <script type="text/javascript" src="cordova.js"></script> -->
+	  	<script type="text/javascript" src="cordova.js"></script>
 	<style type="text/css" media="screen">
 	table{
 		text-align: center;	
@@ -22,17 +22,17 @@
 	<script type="text/javascript">
 	let fetchedRecords = false;
 	let requests = [];
+	CURRENT_UID = localStorage.getItem("CURRENT_UID");
 	function cleanUp(){
 		$(".requestBtn").click(function(){
 			let obj = requests[parseInt(this.id[1])];
 			const toID = obj.id;
 			const phone = obj.contact;
-			console.log(obj);
 			reqs.doc(toID + CURRENT_UID).set({
 				From : CURRENT_UID,
 				To : toID,
 				Name : currentUserName,
-				Contact : currentUser.Contact,
+				Contact : phone,
 				Age : currentUser.Age,
 				City : currentUser.City
 			});
@@ -40,7 +40,6 @@
 					$("#SorryModal").modal('show');
 				return;
 			}
-			console.log("Made Request");
 				cordova.plugins.phonedialer.call(
 				phone,
 				function(err){
@@ -61,11 +60,7 @@
 	$(document).ready(function(){
 	$("#getDataBtn").click(function(){
 		getBloodRecords();
-	
-	});
-
-	
-
+		});
 	});
 
 
@@ -75,11 +70,9 @@ function getBloodRecords(){
 	const tb = $("#tableBody");
 	function addRow(data,c){
 	const existingData = tb.html();
-	console.log(existingData)
 	let newData = "<tr> <td> " + data.First + " "+ data.Last + "</td> <td>" + data.Age + "</td>";
 	newData += "<td>" + data.BloodType + "</td>"
 	newData+= "<td> <button id='b" + c + "' type=button class=\"requestBtn btn-danger btn\" >Request Help</button> </td> </tr>"; 
-	// console.log(newData)
 	tb.html(existingData+newData);
 }
 	if(fetchedRecords === true){
@@ -87,8 +80,7 @@ function getBloodRecords(){
 		requests = [];
 	}
 	const bloodType= $("#bloodType").val();
-	db.collection("Users")
-		.where("BloodType","==", bloodType)
+	users.where("BloodType","==", bloodType)
 		.get()
 		.then(function(qs){
 			if(qs == null){
@@ -98,12 +90,11 @@ function getBloodRecords(){
 			fetchedRecords = true;
 			let count=0;
 			qs.forEach(function(doc){
-				console.log(doc.id, CURRENT_UID);
 				if(doc.id == CURRENT_UID) return;
-				let data = doc.data();
+				let data = doc.data(); 
 				let contact = "";
 				if(data.Permit){
-					contact = data.Contact;
+					contact = data.ContactInfo.Contact;
 				}
 				requests.push({
 					id : doc.id, 
@@ -156,12 +147,6 @@ function getBloodRecords(){
 			</div>
 		</div>
 	
-<!-- 
-	For me to get blood from others, what do I need?
-	I just need the person's UID number,
-	using which I can add to a common data pool.
-	Frm which the user will query and see how many requests he has.
-	Which will then be displayed on the donate page. -->
 	<div>
 	    <select id="bloodType" class="custom-select selectBlood" width="50px">
             <option value="A+">A+</option>
@@ -188,13 +173,6 @@ function getBloodRecords(){
 			</tr>
 		</thead>
 		<tbody id="tableBody">
-<!-- 			<tr>
-				<td>Rahul</td>
-				<td> 19</td>
-				<td> AB+</td>
-				<td><button class="btn btn-danger">Request Help</button>
-			</tr>
-			 -->
 		</tbody>
 	</table>
 </body>

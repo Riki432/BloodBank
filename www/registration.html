@@ -7,7 +7,7 @@
     <script type="text/javascript" src="js/popper.min.js"></script>
    <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/Cities.js"></script>
-     <script type="text/javascript" src="cordova.js"></script>
+     <!-- <script type="text/javascript" src="cordova.js"></script> -->
     <script type="text/javascript">
            let fn_check = false;
            let ln_check = false;
@@ -90,12 +90,13 @@
 
             // Contact
             $("#userContact").change(function(){
-                if(this.value.length != 10){
-                    $("#userContactLabel").css("color", "red");
-                    ph_check=false;
-                }else{
+                let re= /[0-9]{10}/
+                if(this.value.length == 10 && re.test(this.value){
                     $("#userContactLabel").css("color", "green");
                     ph_check=true;
+                }else{
+                    $("#userContactLabel").css("color", "red");
+                    ph_check=false;
                 }
                 if(ph_check)  $(this).css("background-color","white"); 
             });
@@ -116,7 +117,7 @@
 
             // Age
             $("#userAge").change(function(){
-                if(this.value < 18){
+                if(this.value < 18 && this.value > 70){
                     $("#userAgeLabel").css("color","red");
                     age_check=false;
                     

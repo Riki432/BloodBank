@@ -31,7 +31,6 @@
 					frame.attr("src", "./Requests.html");
 				});
 				$("#signOut").click(function(){
-					console.log("Calling logging out");
 					logOutBloodBank();
 				});
 			});
@@ -43,7 +42,6 @@
 <script type="text/javascript" src="js/initFire.js"></script>
   	<script type="text/javascript">
 	function logOutBloodBank(){
-	console.log("Loggin out!");
 	firebase.auth().signOut();
 	setTimeout(function(){},2000);
 	window.location.href = "Login.html";
@@ -74,11 +72,6 @@
 			</big>
 		</div>
 
-		<!-- <div class="container-fluid" style="background-color: black; "> -->
-				<iframe id="frame" height=800px width="100%" src="./Donate.html" >
-					
-				</iframe>
-		<!-- </div> -->
-	<!-- </div> -->
+				<iframe id="frame" height=800px width="100%" src="./Donate.html" ></iframe>
 </body>
 </html>

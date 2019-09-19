@@ -11,10 +11,8 @@
       $(document).ready(function(){
         $(".toast").hide();
         $("#loginBtn").click(function(){
-        const email = $("#userEmailID").val();
-        console.log(email);
+        const email = $("#userEmailID").val().trim();
         const pass = $("#userPassword").val();
-        console.log(pass);
         loginBloodBank(email, pass);
       }); 
   });
@@ -54,29 +52,17 @@
     <input type="password" class="form-control" id="userPassword" placeholder="Password">
     <br>
   <button type="button" ontouchend="window.plugins.deviceFeedback.haptic(window.plugins.deviceFeedback.KEYBOARD_TAP)" class="btn btn-primary "  id="loginBtn">Login</button>
-  <!-- <button type="button" class="btn btn-primary " id="otpBtn">Verify OTP</button> -->
 </form>
-  <!-- <div id="recap"></div> -->
-  <!-- <a href="bloodbankRetrive.html" title="Check" class="page-link">Check if You are in the Database</a> -->
   <br> <br>
   <a href="registration.html" title="Check" class="page-link">Or Create an account</a></div>
   <div class="toast" style="opacity: 1" data-autohide="false">
     <div class="toast-header">
      <strong class="mr-auto text-danger"> Error</strong>
-     <!-- <small class="text-muted">5 mins ago</small> -->
      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
     </div>
    <div id="errBody" class="toast-body">
-    <!-- Some text inside the toast body -->
    </div>
 </div>
 </body>
 </html>
 
-<!-- 
-Acc Number : 364942
-Pass : 6PS7RNLKtR
-Port : 3306
-Server : http://sql12.freesqldatabase.com/
-
- -->
