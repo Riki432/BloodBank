@@ -18,6 +18,9 @@
     },
     "cordova-plugin-velda-devicefeedback": {
       "PACKAGE_NAME": "io.cordova.bloodbank"
+    },
+    "cordova-sms-plugin": {
+      "PACKAGE_NAME": "io.cordova.bloodbank"
     }
   },
   "dependent_plugins": {}

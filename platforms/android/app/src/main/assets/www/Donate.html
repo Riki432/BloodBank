@@ -3,6 +3,8 @@
 <head>
 	<title>Requests</title>
 			<link rel="stylesheet" href="css/bootstrap.min.css">
+
+
 	  		<script type="text/javascript" src="js/jquery.js"></script>
 	  		<script type="text/javascript" src="js/popper.min.js"></script>
 	  		<script type="text/javascript" src="js/bootstrap.min.js"></script>
@@ -31,7 +33,7 @@
 		}
 	</style>
 	<script type="text/javascript">
-		let contacts = [];
+		let request_contacts = [];
 		CURRENT_UID = localStorage.getItem("CURRENT_UID");
 	function addRequestRow(data,c){
 			let string = "<tr> <td> " + data.Name + "</td>";
@@ -51,7 +53,8 @@
 						let count = 0;
 						docs.forEach(function(doc){
 							let data = doc.data();
-							contacts.push(data.Contact);
+							request_contacts.push(data.Contact);
+							// alert(data.Contact);
 							addRequestRow(data, count);
 							count++;
 						});
@@ -63,8 +66,9 @@
 
 	function bindFunctions(){
 	const hb = $(".helpBtn"); 
+	hb.attr("ontouchend","window.plugins.deviceFeedback.haptic(window.plugins.deviceFeedback.KEYBOARD_TAP)");
 	hb.click(function(){
-	const ph = contacts[parseInt(this.id[1])];
+	const ph = request_contacts[parseInt(this.id[1])];
 	cordova.plugins.phonedialer.call(
 		ph,
 		function(err){
@@ -75,7 +79,6 @@
 		}
 		);
 	});
-	hb.attr("ontouchend","window.plugins.deviceFeedback.haptic(window.plugins.deviceFeedback.KEYBOARD_TAP)");
 	}
 
 		$(document).ready(async function(){

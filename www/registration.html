@@ -7,7 +7,7 @@
     <script type="text/javascript" src="js/popper.min.js"></script>
    <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/Cities.js"></script>
-     <!-- <script type="text/javascript" src="cordova.js"></script> -->
+     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript">
            let fn_check = false;
            let ln_check = false;
@@ -17,11 +17,7 @@
            let ph_check = false;
            let ad_check = false;
            let age_check = false;
-
-
-
         $(document).ready(function(){
-         
             const citySelector = $("#userCity");
             CITY_LIST.forEach(function(city){
                 let dom = "<option value= \"" + city + "\" >"
@@ -90,8 +86,8 @@
 
             // Contact
             $("#userContact").change(function(){
-                let re= /[0-9]{10}/
-                if(this.value.length == 10 && re.test(this.value){
+                let re= /[0-9]{10}/;
+                if(this.value.length == 10 && re.test(this.value)){
                     $("#userContactLabel").css("color", "green");
                     ph_check=true;
                 }else{
@@ -117,7 +113,7 @@
 
             // Age
             $("#userAge").change(function(){
-                if(this.value < 18 && this.value > 70){
+                if(this.value < 18 || this.value > 70){
                     $("#userAgeLabel").css("color","red");
                     age_check=false;
                     
@@ -239,9 +235,9 @@
             <tr>
                 <th id="userGenderLabel">Select your gender</th>
                 <td>
-                    Male<input type="radio" name="userGender" value="Male" id="m" checked="checked" />
-                    Female<input type="radio" name="userGender" id="f" value="Female" />
-                    Others<input id="o" type="radio" name="userGender" value="Others" />
+                    <input type="radio" name="userGender" value="Male" id="m" checked="checked" /> Male <br/>
+                    <input type="radio" name="userGender" id="f" value="Female" /> Female <br/>
+                    <input id="o" type="radio" name="userGender" value="Others" /> Others <br/>
                 </td>
             </tr>
             <tr>
@@ -261,7 +257,7 @@
             </tr>
             <tr>
                 <th id="userAgeLabel">Age</th>
-                <td><input id="userAge" type="number" /></td>
+                <td><input id="userAge" type="number" max="70"/></td>
             </tr>
             <tr>
                 <th id="userCityLabel">City</th>

@@ -6,7 +6,9 @@
 			<script type="text/javascript" src="js/jquery.js"></script>
 	  		<script type="text/javascript" src="js/popper.min.js"></script>
 	  	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
 	  	<script type="text/javascript" src="cordova.js"></script>
+	
 	<style type="text/css" media="screen">
 	table{
 		text-align: center;	
@@ -23,24 +25,48 @@
 	let fetchedRecords = false;
 	let requests = [];
 	CURRENT_UID = localStorage.getItem("CURRENT_UID");
+	var smsApp = {
+    sendSms: function(ph, con) {
+        var number = ph.toString();
+        var message = con; //"I got your contact from Life Savers. I need your help. Please contact me as soon as possible.";
+        // alert(number, message);
+        //CONFIGURATION
+        var options = {
+            replaceLineBreaks: false,
+             android: {
+                intent: 'INTENT'  
+            }
+        };
+        var success = function () { alert('Message sent successfully'); };
+        var error = function (e) { 
+        	alert('Message Failed:' + e); 
+        };
+        sms.send(number, message, options, success, error);
+    }
+};
 	function cleanUp(){
 		$(".requestBtn").click(function(){
+			$(this).attr("ontouchend","window.plugins.deviceFeedback.haptic(window.plugins.deviceFeedback.KEYBOARD_TAP)")
 			let obj = requests[parseInt(this.id[1])];
 			const toID = obj.id;
-			const phone = obj.contact;
+			const phone =  obj.contact;
 			reqs.doc(toID + CURRENT_UID).set({
 				From : CURRENT_UID,
 				To : toID,
 				Name : currentUserName,
-				Contact : phone,
+				Contact : currentUser.ContactInfo.Contact,
 				Age : currentUser.Age,
 				City : currentUser.City
 			});
 			if(phone == ""){
 					$("#SorryModal").modal('show');
 				return;
+			}else
+			{
+				$("#RequestModal").modal('show');
 			}
-				cordova.plugins.phonedialer.call(
+			 $("#callBtn").click(function(){
+			 	cordova.plugins.phonedialer.call(
 				phone,
 				function(err){
 				if(err == "empty") $("#SorryModal").modal('show');
@@ -49,10 +75,21 @@
 				function(success) {
 					}
 				);
+			 });
+
+			 $("#smsBtn").click(function(){
+			 	let smsContent = $("#smsContent").val();
+			 	if(smsContent == ""){
+			 		smsContent = "I got your contact from Life Savers. I need your help. Please contact me as soon as possible.";
+			 	}
+			 	// alert(smsContent);
+			 	smsApp.sendSms(phone, smsContent);
+			 });
+				
 				});
 			this.disabled=true;
 			// 
-			$(".requestBtn").attr("ontouchend","window.plugins.deviceFeedback.haptic(window.plugins.deviceFeedback.KEYBOARD_TAP)")
+			
 		
 		}
 
@@ -72,7 +109,7 @@ function getBloodRecords(){
 	const existingData = tb.html();
 	let newData = "<tr> <td> " + data.First + " "+ data.Last + "</td> <td>" + data.Age + "</td>";
 	newData += "<td>" + data.BloodType + "</td>"
-	newData+= "<td> <button id='b" + c + "' type=button class=\"requestBtn btn-danger btn\" >Request Help</button> </td> </tr>"; 
+	newData+= "<td> <button id='b" + c + "' type=button class=\"requestBtn btn-danger btn\" >Request</button> </td> </tr>"; 
 	tb.html(existingData+newData);
 }
 	if(fetchedRecords === true){
@@ -96,10 +133,7 @@ function getBloodRecords(){
 				if(data.Permit){
 					contact = data.ContactInfo.Contact;
 				}
-				requests.push({
-					id : doc.id, 
-					contact: contact
-				});
+				requests.push({id: doc.id, contact: contact});
 				addRow(data, count);
 				count+=1;
 			});
@@ -124,7 +158,61 @@ function getBloodRecords(){
 </style>
 </head>
 <body>
-	      <div id="SorryModal" class="modal fade" role="dialog">
+	<br>
+	<div>
+	    <select id="bloodType" class="custom-select selectBlood" width="50px">
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+                </td>
+	<span><button id="getDataBtn" class="ml-5 btn btn-dark">Search</button> </span>
+	</div>
+<br>
+
+	<table class="table table-responsive table-light text-primary" style="font-size:18px">
+		<caption>Donate Blood</caption>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Age</th>
+				<th>Type</th>
+				<th>Request</th>
+			</tr>
+		</thead>
+		<tbody id="tableBody">
+		</tbody>
+	</table>
+			<div id="RequestModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <p class="text-primary">
+                    Choose how you would like to contact them:  
+                     </p>
+                     <div>
+                     <button id="callBtn"class="mx-5 btn btn-danger">Call</button>
+                     <button id="smsBtn" class="mx-5 btn btn-danger smsBtn">SMS</button>
+                 </div>
+                     <br>  
+                    <textarea id="smsContent" cols="35" rows="4" placeholder="Enter sms content here. (Leave it blank for default sms)."
+					></textarea> <br>
+                    <p class="text-muted"> We wish you good luck. </p>
+                    </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+				</div>
+			</div>
+		</div>
+			      <div id="SorryModal" class="modal fade" role="dialog">
               <div class="modal-dialog">
 
                 <!-- Modal content-->
@@ -146,34 +234,6 @@ function getBloodRecords(){
 				</div>
 			</div>
 		</div>
-	
-	<div>
-	    <select id="bloodType" class="custom-select selectBlood" width="50px">
-            <option value="A+">A+</option>
-            <option value="A-">A-</option>
-            <option value="B+">B+</option>
-            <option value="B-">B-</option>
-            <option value="AB+">AB+</option>
-            <option value="AB-">AB-</option>
-            <option value="O+">O+</option>
-            <option value="O-">O-</option>
-          </select>
-                </td>
-	<span><button id="getDataBtn" class="ml-4 btn btn-dark">Search</button> </span>
-	</div>
-<br>
-	<table class="table-responsive table table-light text-primary">
-		<caption>Donate Blood</caption>
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Age</th>
-				<th>Blood Type</th>
-				<th>Request</th>
-			</tr>
-		</thead>
-		<tbody id="tableBody">
-		</tbody>
-	</table>
+
 </body>
 </html>

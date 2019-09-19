@@ -33,6 +33,7 @@
 				$("#signOut").click(function(){
 					logOutBloodBank();
 				});
+
 			});
 		</script>
 			<!-- Firebase Links -->
@@ -43,7 +44,10 @@
   	<script type="text/javascript">
 	function logOutBloodBank(){
 	firebase.auth().signOut();
-	setTimeout(function(){},2000);
+	setTimeout(function(){
+		localStorage.removeItem("email");
+		localStorage.removeItem("pass");
+	},2000);
 	window.location.href = "Login.html";
 }
   		

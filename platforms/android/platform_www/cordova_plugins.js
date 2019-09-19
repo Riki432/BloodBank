@@ -23,12 +23,21 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "window.plugins.deviceFeedback"
       ]
+    },
+    {
+      "id": "cordova-sms-plugin.Sms",
+      "file": "plugins/cordova-sms-plugin/www/sms.js",
+      "pluginId": "cordova-sms-plugin",
+      "clobbers": [
+        "window.sms"
+      ]
     }
   ];
   module.exports.metadata = {
     "cordova-plugin-whitelist": "1.3.4",
     "cordova-plugin-phone-call": "1.0.7",
     "cordova-plugin-badge": "0.8.8",
-    "cordova-plugin-velda-devicefeedback": "0.0.2"
+    "cordova-plugin-velda-devicefeedback": "0.0.2",
+    "cordova-sms-plugin": "1.0.0"
   };
 });

@@ -34,7 +34,9 @@ firebase.auth().onAuthStateChanged(function(user) {
 
 function logOutBloodBank() {
     firebase.auth().signOut();
-    setTimeout(function() {}, 2000);
+    setTimeout(function() {
+
+    }, 2000);
     window.location.href = "Login.html";
 }
 
@@ -68,7 +70,7 @@ async function addUser() {
         permit = true;
     }
     const bloodType = document.getElementById("userBloodType").value;
-    const age = document.getElementById("userAge").value;
+    const age = Math.floor(document.getElementById("userAge").value);
     const city = document.getElementById("userCity").value;
 
     firebase.auth().createUserWithEmailAndPassword(em, ps)
